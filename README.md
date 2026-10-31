@@ -5,13 +5,26 @@ It works on a laptop and a phone. Every person, company and piece of feedback in
 
 ## What's in it
 
+There are no logins, so a **View as** switch in the header changes who is using it: Sam Taylor (the individual) or Alex Morgan (Sam's manager). Each person only sees their own screens.
+
+**Sam, the individual**
+
 | Screen | Address | What you can do |
 | --- | --- | --- |
 | 1. My inputs | `#inputs` | See the Enneagram summary and company feedback; add, edit or remove your own goals |
 | 2. Choose priorities | `#priorities` | Add three suggestions to your plan, set others aside, reorder them, then set the plan |
-| 3. My plan | `#plan` | See the three priorities with progress, the next step, and what your manager can see |
+| 3. My plan | `#plan` | See the three priorities with progress, the next step, and switches for what your manager can see |
 | 4–6. A priority | `#p-<id>-insight`, `-build`, `-practice` | Read why it matters and add reflections; tick off learning items; open a practice session |
-| 7. Manager view | `#manager` | The approved "how to work with me" summary, agreed priorities and a rehearsal button |
+| Preview | `#preview` | See your profile exactly as your manager sees it |
+
+**Alex, the manager**
+
+| Screen | Address | What you can do |
+| --- | --- | --- |
+| Your team | `#team` | An overview of everyone who reports to you: plan status, shared priorities and progress |
+| A team member | `#team-<id>` | Their "how to work with me" summary and priorities (only if shared), steps to prepare for a feedback conversation, and a rehearsal button |
+
+Sam's entry in the team updates live from what you click as Sam. The other five team members are fixed example data in `src/content.js`.
 
 The Practice buttons open a mock practice screen until we have Ovida's link. Set `product.ovidaUrl` in `src/content.js` to make them open Ovida instead.
 
@@ -62,7 +75,8 @@ npm run build:single
 
 - `src/content.js`: all the placeholder content
 - `src/useDemoState.js`: what the viewer has done, saved in the browser
-- `src/router.js`: screen addresses in the URL hash
+- `src/router.js`: screen addresses in the URL hash, and which screens each viewer can open
+- `src/team.js`: builds the manager's team list, including Sam's live entry
 - `src/screens/`: one file per screen
 - `src/components/`: shared pieces (header, three sources side by side, quotes, progress bar, practice screen)
 - `src/styles.css`: the Walnut look

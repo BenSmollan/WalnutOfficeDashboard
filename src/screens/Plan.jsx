@@ -138,8 +138,8 @@ export default function Plan({ state, actions }) {
             <span className="switch" aria-hidden="true" />
             <span>My three priorities and progress</span>
           </label>
-          <a href="#manager" className="link-btn">
-            See what your manager sees
+          <a href="#preview" className="link-btn">
+            Preview what {person.manager.split(' ')[0]} sees
           </a>
         </div>
       </section>

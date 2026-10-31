@@ -1,24 +1,37 @@
 import { useState } from 'react';
-import { person, product } from '../content.js';
+import { manager, person, product } from '../content.js';
 
-const LINKS = [
-  { hash: '#inputs', screen: 'inputs', label: 'My inputs', short: 'Inputs', step: 1 },
-  { hash: '#priorities', screen: 'priorities', label: 'Choose priorities', short: 'Priorities', step: 2 },
-  { hash: '#plan', screen: 'plan', label: 'My plan', short: 'Plan', step: 3 },
-];
+const NAV = {
+  individual: [
+    { hash: '#inputs', screens: ['inputs'], label: 'My inputs', short: 'Inputs', step: 1 },
+    { hash: '#priorities', screens: ['priorities'], label: 'Choose priorities', short: 'Priorities', step: 2 },
+    { hash: '#plan', screens: ['plan', 'priority', 'preview'], label: 'My plan', short: 'Plan', step: 3 },
+  ],
+  manager: [{ hash: '#team', screens: ['team', 'member'], label: 'Your team', short: 'Team' }],
+};
 
-export default function Header({ route, onReset }) {
+export default function Header({ screen, viewer, onSwitchViewer, onReset }) {
   const [confirming, setConfirming] = useState(false);
-  const current = route.screen === 'priority' ? 'plan' : route.screen;
+  const who = viewer === 'manager' ? manager : person;
 
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <a className="brand" href="#plan">
+        <a className="brand" href={viewer === 'manager' ? '#team' : '#plan'}>
           <span className="brand-name">{product.name}</span>
-          <span className="brand-for">{person.name}</span>
+          <span className="brand-for">
+            {who.name}
+            {viewer === 'manager' ? ' · Manager' : ''}
+          </span>
         </a>
-        <div className="reset">
+        <div className="controls">
+          <label className="view-as" htmlFor="view-as">
+            <span>View as</span>
+            <select id="view-as" value={viewer} onChange={(e) => onSwitchViewer(e.target.value)}>
+              <option value="individual">{person.name}</option>
+              <option value="manager">{manager.name} (manager)</option>
+            </select>
+          </label>
           {confirming ? (
             <span className="reset-confirm" role="group" aria-label="Confirm reset">
               <span>Clear everything?</span>
@@ -43,21 +56,13 @@ export default function Header({ route, onReset }) {
           )}
         </div>
         <nav className="nav" aria-label="Main">
-          {LINKS.map((l) => (
-            <a key={l.hash} href={l.hash} className="nav-link" aria-current={current === l.screen ? 'page' : undefined}>
-              <span className="nav-step">{l.step}</span>
+          {NAV[viewer].map((l) => (
+            <a key={l.hash} href={l.hash} className="nav-link" aria-current={l.screens.includes(screen) ? 'page' : undefined}>
+              {l.step && <span className="nav-step">{l.step}</span>}
               <span className="label-long">{l.label}</span>
-              <span className="label-short">
-                {l.short}
-              </span>
+              <span className="label-short">{l.short}</span>
             </a>
           ))}
-          <a href="#manager" className="nav-link manager" aria-current={current === 'manager' ? 'page' : undefined}>
-            <span className="label-long">Manager view</span>
-            <span className="label-short">
-              Manager
-            </span>
-          </a>
         </nav>
       </div>
     </header>

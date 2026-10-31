@@ -365,17 +365,156 @@ export const howToWorkWithMe = {
   ],
 };
 
+// The manager who sees the team overview
+export const manager = {
+  name: 'Alex Morgan',
+  firstName: 'Alex',
+  role: 'Chief Operating Officer',
+};
+
+// Steps shown on every team member's profile in the manager view
 export const managerPrep = {
   steps: [
     'Pick one behaviour to discuss, with a recent, specific example.',
+    'Check their "how to work with me" notes for how they take feedback best.',
     'Open by asking for their view before giving yours.',
-    'Leave a pause after your point. Sam may need a moment before responding.',
     'Agree one next step together and a date to check in.',
   ],
+};
+
+// Sam's entry in the team overview. Sam's plan and progress come from what the viewer clicks.
+export const samInTeam = {
+  nextOneToOne: 'Wednesday',
+  lastActive: 'Today',
   practice: {
-    id: 'manager-p1',
+    id: 'mgr-sam',
     title: 'Giving Sam feedback on missed delivery dates',
     who: 'Sam, in your next one-to-one',
     aim: 'Be specific and direct, and invite Sam to disagree.',
   },
 };
+
+// The rest of Alex's team. Fixed example data.
+// status: 'active' = plan set, 'choosing' = choosing priorities, 'invited' = not started
+export const team = [
+  {
+    id: 'priya',
+    name: 'Priya Shah',
+    firstName: 'Priya',
+    role: 'Head of Finance',
+    status: 'active',
+    lastActive: 'Yesterday',
+    nextOneToOne: 'Thursday',
+    sharing: { summary: true, priorities: true },
+    howToWorkWithMe: {
+      intro: "I hold high standards for myself and my team. Tell me plainly what isn't working; I'd rather know than guess.",
+      helps: [
+        'Bring specific examples, not general impressions.',
+        'Tell me what is going well too. I tend to notice only what needs fixing.',
+      ],
+      avoid: ['Vague praise or vague criticism.', 'Changing a decision without explaining why.'],
+    },
+    priorities: [
+      { id: 'priya-1', title: 'Let good enough be good enough', why: 'Save the highest standards for the work that needs them.', done: 4, steps: 6 },
+      { id: 'priya-2', title: 'Give credit out loud', why: 'Make your appreciation as visible as your corrections.', done: 2, steps: 5 },
+      { id: 'priya-3', title: 'Delegate the detail', why: 'Hand over reviews you currently redo yourself.', done: 1, steps: 5 },
+    ],
+    practice: {
+      id: 'mgr-priya',
+      title: 'Asking Priya to hand over the monthly reporting',
+      who: 'Priya, in your next one-to-one',
+      aim: 'Acknowledge her standards while asking her to let go.',
+    },
+  },
+  {
+    id: 'hannah',
+    name: 'Hannah Cole',
+    firstName: 'Hannah',
+    role: 'Head of Customer Service',
+    status: 'active',
+    lastActive: '2 days ago',
+    nextOneToOne: 'Tuesday',
+    sharing: { summary: true, priorities: true },
+    howToWorkWithMe: {
+      intro: 'I think best out loud and like to talk things through. Give me space to explore before we decide.',
+      helps: [
+        'Talk it through with me rather than sending a written note.',
+        'Ask questions that help me find the answer myself.',
+      ],
+      avoid: ['Expecting an instant answer to a big question.', 'Feedback in front of the team.'],
+    },
+    priorities: [
+      { id: 'hannah-1', title: 'Make the call', why: 'Decide sooner, with less need for everyone to agree.', done: 3, steps: 5 },
+      { id: 'hannah-2', title: 'Hold the team to deadlines', why: 'Keep warmth and accountability together.', done: 5, steps: 6 },
+      { id: 'hannah-3', title: 'Say what you think first', why: 'Share your view before asking for everyone else’s.', done: 2, steps: 4 },
+    ],
+    practice: {
+      id: 'mgr-hannah',
+      title: 'Asking Hannah to make the call on the rota changes',
+      who: 'Hannah, in your next one-to-one',
+      aim: 'Be clear the decision is hers, and by when.',
+    },
+  },
+  {
+    id: 'lena',
+    name: 'Lena Okafor',
+    firstName: 'Lena',
+    role: 'Head of People',
+    status: 'active',
+    lastActive: 'Today',
+    nextOneToOne: 'Wednesday',
+    sharing: { summary: true, priorities: false },
+    howToWorkWithMe: {
+      intro: 'I put a lot into supporting others and can forget to ask for support myself. Check in on my workload, not just my team’s.',
+      helps: ['Ask me directly what I need.', 'Recognise the work that happens behind the scenes.'],
+      avoid: ['Assuming I have capacity because I said yes.', 'Feedback by email on sensitive topics.'],
+    },
+    priorities: [],
+    practice: {
+      id: 'mgr-lena',
+      title: 'Asking Lena what she would drop to make room',
+      who: 'Lena, in your next one-to-one',
+      aim: 'Make it safe for her to say she has too much on.',
+    },
+  },
+  {
+    id: 'tom',
+    name: 'Tom Reed',
+    firstName: 'Tom',
+    role: 'Head of Sales',
+    status: 'choosing',
+    lastActive: '3 days ago',
+    nextOneToOne: 'Monday',
+    sharing: { summary: true, priorities: true },
+    howToWorkWithMe: {
+      intro: "I move fast and like to keep energy high. Catch me early if I've moved on before others are ready.",
+      helps: ['Keep it short and get to the point.', 'Tie feedback to results I care about.'],
+      avoid: ['Long written feedback I have to decode.', 'Raising it weeks after the event.'],
+    },
+    priorities: [],
+    practice: {
+      id: 'mgr-tom',
+      title: 'Telling Tom his team feels rushed',
+      who: 'Tom, in your next one-to-one',
+      aim: 'Slow the conversation down and ask how his team is finding the pace.',
+    },
+  },
+  {
+    id: 'marcus',
+    name: 'Marcus Bell',
+    firstName: 'Marcus',
+    role: 'Head of Technology',
+    status: 'invited',
+    lastActive: 'Not yet',
+    nextOneToOne: 'Friday',
+    sharing: { summary: false, priorities: false },
+    howToWorkWithMe: null,
+    priorities: [],
+    practice: {
+      id: 'mgr-marcus',
+      title: 'Encouraging Marcus to start his development plan',
+      who: 'Marcus, in your next one-to-one',
+      aim: 'Show why it matters without making it feel like an order.',
+    },
+  },
+];

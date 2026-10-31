@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { person } from '../content.js';
 
 // Stand-in for Ovida's AI role-play. The real version opens Ovida with this scenario loaded.
 export default function PracticeModal({ conversation, onFinish, onClose }) {
@@ -39,7 +38,7 @@ export default function PracticeModal({ conversation, onFinish, onClose }) {
             </div>
           </dl>
           <div className="mock-chat" aria-label="Example of the role-play">
-            <p className="bubble them">Hi {conversation.forManager ? person.firstName : 'there'}, you wanted to talk?</p>
+            <p className="bubble them">Hi, you wanted to talk?</p>
             <p className="bubble you">Yes, thanks for making the time. There&rsquo;s something I want to raise with you.</p>
           </div>
           <p className="modal-note">

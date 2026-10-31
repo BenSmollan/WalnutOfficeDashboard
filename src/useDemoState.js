@@ -18,6 +18,7 @@ function initialState() {
     reflections: {},
     sessions: {},
     sharing: { summary: true, priorities: true },
+    viewer: 'individual',
   };
 }
 
@@ -94,6 +95,7 @@ export function useDemoState() {
         sessions: { ...s.sessions, [conversationId]: (s.sessions[conversationId] || 0) + 1 },
       })),
     setSharing: (key, value) => update((s) => ({ sharing: { ...s.sharing, [key]: value } })),
+    setViewer: (viewer) => update(() => ({ viewer })),
 
     reset: () => setState(initialState()),
   };
