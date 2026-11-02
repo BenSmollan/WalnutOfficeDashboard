@@ -1,0 +1,13 @@
+# Netlify reads this file automatically when the site is connected to the repo.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Keep the prototype out of search engines: it is only for people with the link.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
