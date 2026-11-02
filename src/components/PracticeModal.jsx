@@ -27,6 +27,7 @@ export default function PracticeModal({ conversation, onFinish, onClose }) {
           <h2 id="practice-title">{conversation.title}</h2>
         </div>
         <div className="modal-body">
+          {conversation.brief && <p>{conversation.brief}</p>}
           <dl className="facts">
             <div>
               <dt>Who you&rsquo;re talking to</dt>

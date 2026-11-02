@@ -5,14 +5,14 @@ import Inputs from './screens/Inputs.jsx';
 import Choose from './screens/Choose.jsx';
 import Plan from './screens/Plan.jsx';
 import Priority from './screens/Priority.jsx';
+import Progress from './screens/Progress.jsx';
 import Team from './screens/Team.jsx';
 import Profile from './screens/Profile.jsx';
 import { SCREENS_FOR, useHashRoute } from './router.js';
 import { useDemoState } from './useDemoState.js';
 
-function homeFor(viewer, state) {
-  if (viewer === 'manager') return 'team';
-  return state.planSet ? 'plan' : 'inputs';
+function homeFor(viewer) {
+  return viewer === 'manager' ? 'team' : 'plan';
 }
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
   const viewer = state.viewer;
   // Each viewer only reaches their own screens. Anything else falls back to their home screen.
   const allowed = route.screen && SCREENS_FOR[viewer].includes(route.screen);
-  const screen = allowed ? route.screen : homeFor(viewer, state);
+  const screen = allowed ? route.screen : homeFor(viewer);
   const closePractice = useCallback(() => setPractising(null), []);
 
   const onPractise = (conversation, openedExternally = false) => {
@@ -36,25 +36,27 @@ export default function App() {
 
   const switchViewer = (next) => {
     actions.setViewer(next);
-    navigate(`#${homeFor(next, state)}`);
+    navigate(`#${homeFor(next)}`);
   };
 
   return (
     <>
       <Header
         screen={screen}
+        tab={route.tab}
         viewer={viewer}
         onSwitchViewer={switchViewer}
-        onReset={() => {
-          actions.reset();
-          navigate('#inputs');
+        onReset={(kind) => {
+          actions.reset(kind);
+          navigate('#plan');
         }}
       />
       <main className="main" id="main">
+        {screen === 'plan' && <Plan state={state} actions={actions} onPractise={onPractise} />}
+        {screen === 'priority' && <Priority route={route} state={state} actions={actions} onPractise={onPractise} />}
+        {screen === 'progress' && <Progress state={state} actions={actions} />}
         {screen === 'inputs' && <Inputs state={state} actions={actions} />}
         {screen === 'priorities' && <Choose state={state} actions={actions} navigate={navigate} />}
-        {screen === 'plan' && <Plan state={state} actions={actions} />}
-        {screen === 'priority' && <Priority route={route} state={state} actions={actions} onPractise={onPractise} />}
         {screen === 'preview' && <Profile id="sam" state={state} onPractise={onPractise} preview />}
         {screen === 'team' && <Team state={state} />}
         {screen === 'member' && <Profile id={route.id} state={state} onPractise={onPractise} />}

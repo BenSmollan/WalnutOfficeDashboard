@@ -1,4 +1,5 @@
 import ScreenHead from '../components/ScreenHead.jsx';
+import { ArrowLeft } from '../components/Icons.jsx';
 import Sources from '../components/Sources.jsx';
 import { priorities } from '../content.js';
 import { PLAN_SIZE } from '../useDemoState.js';
@@ -21,7 +22,10 @@ export default function Choose({ state, actions, navigate }) {
 
   return (
     <div className="screen with-dock">
-      <ScreenHead eyebrow="Step 2 of 3" title="Choose Your Three Priorities">
+      <a href="#plan" className="back-link">
+        <ArrowLeft /> My plan
+      </a>
+      <ScreenHead eyebrow="Your priorities" title="Choose Your Three Priorities">
         <p>
           Each suggestion shows where it came from. Add three to your plan, set aside any that don&rsquo;t fit, and use the
           arrows to put them in your order.

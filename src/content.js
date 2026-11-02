@@ -1,7 +1,8 @@
 // PLACEHOLDER CONTENT
 // Everything in this file is made up so the screens have something realistic to show.
-// Jo and Romy will supply the real fictional person, profile, feedback and priorities,
-// and they replace what is here. Never put real client names, reports or feedback in this file.
+// Wording for Sam's plan follows the reference mock-up Jo shared. Jo and Romy will supply
+// the final fictional person, profile, feedback and priorities, and they replace what is here.
+// Never put real client names, reports or feedback in this file.
 
 export const product = {
   name: 'Development Plan',
@@ -11,23 +12,32 @@ export const product = {
 };
 
 export const person = {
-  name: 'Sam Taylor',
+  name: 'Sam Patel',
   firstName: 'Sam',
   role: 'Director of Operations',
   company: 'Harbourline Group',
   manager: 'Alex Morgan',
 };
 
+// Dates and labels for the review cycle the demo is set in
+export const cycle = {
+  label: '2027 review cycle',
+  agreedOn: '20 January',
+  goalsUpdated: '12 January',
+  checkIn: 'Thursday 6 February, 10:00',
+};
+
 // Source 1: summary of the Enneagram Coaching Companion report
 export const enneagram = {
   title: 'Enneagram Coaching Companion',
-  type: 'Type 9',
+  type: 'Type Nine, self-preservation first',
+  tileNote: 'From your Coaching Companion',
   summary:
     'Sam is steady, inclusive and good at bringing people together. Attention goes naturally to keeping things calm and making sure everyone feels heard.',
   sections: [
     {
       label: 'Motivations',
-      text: 'Harmony, stability and keeping relationships intact. Sam wants people to feel at ease.',
+      text: 'Harmony, stability and a settled routine. Sam wants people to feel at ease and things to run smoothly.',
     },
     {
       label: 'Strengths',
@@ -35,47 +45,59 @@ export const enneagram = {
     },
     {
       label: 'Blind spots',
-      text: "Can put off difficult conversations and go along with decisions to avoid friction. Sam's own priorities can slip behind other people's.",
+      text: 'Nines keep the peace by holding back their own position. Important priorities can slip behind smaller, easier tasks.',
     },
     {
       label: 'Conflict style',
-      text: 'Smooths things over and waits for tension to pass. Under pressure, may become quietly stubborn rather than say no directly.',
+      text: 'Under pressure, conflict feels like a threat to stability, so it gets postponed. May become quietly stubborn rather than say no directly.',
     },
   ],
 };
 
 // Source 2: feedback from the company
+export const companySummary = {
+  title: '2026 review and 360',
+  tileNote: 'Shared by HR with your permission',
+};
+
 export const company = [
   {
     id: 'c1',
-    kind: '360 feedback',
-    from: 'Direct report',
-    date: 'Q3 2026',
-    quote: 'Kind and supportive, but feedback often arrives too late for us to act on.',
+    kind: '2026 review',
+    from: 'Line manager',
+    date: 'December 2026',
+    quote: 'Needs to be more visible in leadership meetings.',
   },
   {
     id: 'c2',
-    kind: '360 feedback',
-    from: 'Peer',
-    date: 'Q3 2026',
-    quote: 'In leadership meetings Sam often agrees in the room and raises concerns afterwards.',
+    kind: '2026 review',
+    from: 'Line manager',
+    date: 'December 2026',
+    quote: 'Team delivery has slipped; issues need addressing sooner.',
   },
   {
     id: 'c3',
-    kind: '360 feedback',
-    from: 'Line manager',
-    date: 'Q3 2026',
-    quote: "Sam's team would follow them anywhere. I'd like to see Sam push back on me more.",
+    kind: '2026 review',
+    from: 'Delivery record',
+    date: 'December 2026',
+    text: 'The client strategy was delivered late.',
   },
   {
     id: 'c4',
-    kind: 'KPI',
-    from: 'Operations scorecard',
-    date: 'Sept 2026',
-    text: 'On-time project delivery: 78% against a target of 90%.',
+    kind: '360 feedback',
+    from: 'Direct report',
+    date: 'November 2026',
+    quote: 'Kind and supportive, but feedback often arrives too late for us to act on.',
   },
   {
     id: 'c5',
+    kind: '360 feedback',
+    from: 'Line manager',
+    date: 'November 2026',
+    quote: "Sam's team would follow them anywhere. I'd like to see Sam push back on me more.",
+  },
+  {
+    id: 'c6',
     kind: 'Values survey',
     from: 'Company values survey',
     date: '2026',
@@ -85,174 +107,189 @@ export const company = [
 
 // Source 3: the person's own goals (they can add, edit and remove these)
 export const defaultGoals = [
-  { id: 'g1', text: 'I want my team to always know where they stand with me.' },
-  { id: 'g2', text: "I'd like to spend less time firefighting and more time on strategy." },
-  { id: 'g3', text: 'I want to be more confident speaking up with the executive team.' },
+  { id: 'g1', text: 'I want to be taken seriously at exec level.' },
+  { id: 'g2', text: 'I want my team to grow, not just get through.' },
+  { id: 'g3', text: "I'm stuck in operations and want to think ahead." },
 ];
+
+export const weeklyReflection = {
+  prompt: 'When did you hold back your view this week, and what did it cost?',
+};
 
 // Suggested priorities. Each shows its evidence from the three sources.
 // A source can be null when it has nothing to say about that priority.
+// The first three are the plan in the reference mock-up.
 export const priorities = [
   {
-    id: 'feedback',
-    title: 'Give honest feedback early',
-    why: 'All three sources point to the same pattern.',
+    id: 'speak-up',
+    title: 'Say what I think, earlier and more clearly',
+    why: 'You tend to wait until everyone else has spoken, then go along with the room. Your view often arrives after the decision is made.',
     sources: {
-      enneagram: {
-        text: 'You want people to feel at ease, so difficult messages tend to get softened or put off.',
-        ref: 'Blind spots',
-      },
-      company: {
-        quote: 'Kind and supportive, but feedback often arrives too late for us to act on.',
-        ref: '360 feedback, direct report',
-      },
-      you: {
-        quote: 'I want my team to always know where they stand with me.',
-        ref: 'Your goals',
-      },
+      company: { quote: 'Needs to be more visible in leadership meetings.', ref: '2026 review' },
+      you: { quote: 'I want to be taken seriously at exec level.', ref: 'Your goals' },
+      enneagram: { text: 'Nines keep the peace by holding back their own position.', ref: 'Coaching Companion' },
     },
     insight: {
       paragraphs: [
-        'Your profile describes a strong pull towards harmony. When a conversation might upset someone, you are more likely to soften the message or wait for a better moment, and the moment often passes.',
-        'Your team experiences that delay as uncertainty. They value your kindness, and they also want to know early enough to act. Feedback given quickly and plainly is a form of respect, not a threat to the relationship.',
-      ],
-      showsUp: [
-        'You notice a problem but wait until the next one-to-one, or the next quarter, to raise it.',
-        'Your message is wrapped in so much reassurance that the point gets lost.',
-        'You fix things yourself rather than ask someone to change how they work.',
-      ],
-    },
-    build: [
-      { id: 'feedback-b1', kind: 'Read', title: 'Why delayed feedback costs more than it saves', minutes: 6 },
-      { id: 'feedback-b2', kind: 'Watch', title: 'Framing a hard message in under two minutes', minutes: 4 },
-      { id: 'feedback-b3', kind: 'Tool', title: 'Situation, behaviour, impact: a simple structure', minutes: 5 },
-      { id: 'feedback-b4', kind: 'Try', title: 'Give one piece of feedback within 24 hours of noticing it', minutes: null },
-    ],
-    practice: [
-      {
-        id: 'feedback-p1',
-        title: 'Telling a strong performer their reports are late',
-        who: 'A direct report you like and rely on',
-        aim: 'Say it plainly, without softening it away.',
-      },
-      {
-        id: 'feedback-p2',
-        title: "Following up when feedback didn't land",
-        who: 'The same person, two weeks later',
-        aim: 'Hold your point when they push back.',
-      },
-    ],
-  },
-  {
-    id: 'in-the-room',
-    title: 'Say it in the room',
-    why: 'Raise disagreement while the decision is being made, not afterwards.',
-    sources: {
-      enneagram: {
-        text: 'Going along with a decision can feel safer than causing friction in the moment.',
-        ref: 'Conflict style',
-      },
-      company: {
-        quote: 'In leadership meetings Sam often agrees in the room and raises concerns afterwards.',
-        ref: '360 feedback, peer',
-      },
-      you: {
-        quote: 'I want to be more confident speaking up with the executive team.',
-        ref: 'Your goals',
-      },
-    },
-    insight: {
-      paragraphs: [
-        'You often see the risks in a plan before others do. Because open disagreement feels uncomfortable, you tend to keep those concerns until after the meeting, when they are harder to act on.',
-        'Raising a concern in the room, briefly and calmly, gives the group the benefit of your judgement while the decision can still change.',
+        'Your profile describes a strong pull towards harmony. In a meeting, that shows up as listening first, weighing every view and waiting to see where the room lands. It makes you a fair colleague, and it also means your own view often arrives after the decision has been made.',
+        "At exec level, people judge contribution by what is said in the room. Saying what you think early, briefly and calmly is not a threat to harmony. It gives the group your judgement while it can still change the outcome.",
       ],
       showsUp: [
         'You nod along in the meeting and send a long email afterwards.',
         'Colleagues are surprised to learn you had reservations.',
-        'Decisions you doubted go ahead without your view on record.',
+        'You start with "I might be wrong, but..." and the point gets lost.',
       ],
     },
     build: [
-      { id: 'in-the-room-b1', kind: 'Read', title: 'Disagreeing without derailing the meeting', minutes: 5 },
-      { id: 'in-the-room-b2', kind: 'Tool', title: 'Three phrases for raising a concern in under 30 seconds', minutes: 3 },
-      { id: 'in-the-room-b3', kind: 'Try', title: 'Voice one concern in your next leadership meeting', minutes: null },
+      { id: 'speak-up-b1', kind: 'Read', title: 'Why the first view in the room carries the most weight', minutes: 5 },
+      { id: 'speak-up-b2', kind: 'Watch', title: 'Making a point in 30 seconds', minutes: 4 },
+      { id: 'speak-up-b3', kind: 'Tool', title: 'Three openings for disagreeing without derailing', minutes: 3 },
+      { id: 'speak-up-b4', kind: 'Try', title: 'Give your view in the first ten minutes of your next leadership meeting', minutes: null },
     ],
     practice: [
       {
-        id: 'in-the-room-p1',
-        title: 'Challenging a plan the CEO favours',
-        who: 'Your CEO, in a leadership meeting',
-        aim: 'State your concern once, clearly, and stay with it.',
+        id: 'speak-up-p1',
+        title: 'Challenge a plan the room is leaning towards',
+        who: 'Your CEO and peers, in the leadership meeting',
+        brief: 'A 10-minute role-play. The room is leaning one way; you practise giving your view before the decision is made.',
+        aim: 'Say your view early, once and clearly.',
+        minutes: 10,
+      },
+      {
+        id: 'speak-up-p2',
+        title: 'Hold your point when you are talked over',
+        who: 'A senior peer who likes to have the last word',
+        brief: 'An 8-minute role-play. Your colleague moves on before you finish; you practise coming back to your point.',
+        aim: 'Return to your point without apologising for it.',
+        minutes: 8,
+      },
+    ],
+  },
+  {
+    id: 'performance-talks',
+    title: 'Have direct performance conversations with my team',
+    why: 'Two performance issues in your team have gone unaddressed for months. Raising them early is kinder than letting them grow.',
+    sources: {
+      company: { quote: 'Team delivery has slipped; issues need addressing sooner.', ref: '2026 review' },
+      you: { quote: 'I want my team to grow, not just get through.', ref: 'Your goals' },
+      enneagram: { text: 'Under pressure, conflict feels like a threat to stability, so it gets postponed.', ref: 'Coaching Companion' },
+    },
+    insight: {
+      paragraphs: [
+        'You want people to feel at ease, so difficult messages tend to get softened or put off until a better moment, and the moment often passes. Meanwhile the issue grows and the conversation gets harder.',
+        'Your team experiences that delay as uncertainty. They value your kindness, and they also want to know where they stand early enough to act. Raising an issue plainly and soon is a form of respect.',
+      ],
+      showsUp: [
+        'You notice a problem but wait until the quarterly review to raise it.',
+        'Your message is wrapped in so much reassurance that the point gets lost.',
+        'You fix the work yourself rather than ask someone to change how they work.',
+      ],
+    },
+    build: [
+      { id: 'performance-talks-b1', kind: 'Read', title: 'Why delayed feedback costs more than it saves', minutes: 6 },
+      { id: 'performance-talks-b2', kind: 'Tool', title: 'Situation, behaviour, impact: a simple structure', minutes: 5 },
+      { id: 'performance-talks-b3', kind: 'Try', title: 'Raise one issue within 24 hours of noticing it', minutes: null },
+    ],
+    practice: [
+      {
+        id: 'performance-talks-p1',
+        title: 'Raise a missed deadline with a team member',
+        who: 'A team member who has missed two deadlines',
+        brief: 'A 10-minute role-play. The other person tries to steer away from the issue; you practise staying on point.',
+        aim: 'Stay on the point and agree a next step.',
+        minutes: 10,
+      },
+      {
+        id: 'performance-talks-p2',
+        title: 'Open a conversation about a long-running issue',
+        who: 'A well-liked team member whose work has slipped for months',
+        brief: 'A 12-minute role-play. They are surprised and a little hurt; you practise being clear and kind at once.',
+        aim: 'Name the issue plainly, then listen.',
+        minutes: 12,
+      },
+    ],
+  },
+  {
+    id: 'strategic-time',
+    title: 'Protect time for strategic work',
+    why: 'Day-to-day requests fill your week, and the work that matters most to your role keeps moving to next week.',
+    sources: {
+      company: { text: 'The client strategy was delivered late.', ref: '2026 review' },
+      you: { quote: "I'm stuck in operations and want to think ahead.", ref: 'Your goals' },
+      enneagram: { text: 'Nines can lose priorities to smaller, easier tasks.', ref: 'Coaching Companion' },
+    },
+    insight: {
+      paragraphs: [
+        'Small, urgent requests are easy to say yes to and satisfying to clear. Big, important work has no deadline until it is late. Your profile suggests the small tasks will win unless the time for strategy is protected in advance.',
+        'Protecting that time means saying no, or not yet, to some reasonable requests. That can feel like letting people down, and it is what your role now needs from you.',
+      ],
+      showsUp: [
+        'Time blocked for strategy gets given away to the first urgent request.',
+        'Your inbox is clear and the strategy document has not moved.',
+      ],
+    },
+    build: [
+      { id: 'strategic-time-b1', kind: 'Read', title: 'Urgent versus important: why the small things win', minutes: 5 },
+      { id: 'strategic-time-b2', kind: 'Tool', title: 'Plan a weekly block for thinking time', minutes: 10 },
+      { id: 'strategic-time-b3', kind: 'Try', title: 'Keep one two-hour block free of meetings this week', minutes: null },
+    ],
+    practice: [
+      {
+        id: 'strategic-time-p1',
+        title: 'Say no to an urgent request from a peer',
+        who: 'A senior peer who needs your help today',
+        brief: 'An 8-minute role-play. The request sounds urgent; you practise protecting the time you set aside.',
+        aim: 'Decline clearly and offer an alternative.',
+        minutes: 8,
       },
     ],
   },
   {
     id: 'delegate',
-    title: 'Delegate decisions, not just tasks',
+    title: 'Hand over decisions, not just tasks',
     why: 'Let others own outcomes so you can step back from firefighting.',
     sources: {
-      enneagram: {
-        text: 'It can feel easier to take work on yourself than to ask others to stretch.',
-        ref: 'Blind spots',
-      },
-      company: {
-        text: 'On-time project delivery: 78% against a target of 90%.',
-        ref: 'Operations scorecard',
-      },
-      you: {
-        quote: "I'd like to spend less time firefighting and more time on strategy.",
-        ref: 'Your goals',
-      },
+      company: { quote: 'Team delivery has slipped; issues need addressing sooner.', ref: '2026 review' },
+      you: { quote: "I'm stuck in operations and want to think ahead.", ref: 'Your goals' },
+      enneagram: { text: 'It can feel easier to take work on yourself than to ask others to stretch.', ref: 'Coaching Companion' },
     },
     insight: {
       paragraphs: [
         'You are generous with your time and quick to step in when something goes wrong. Over time that makes you the bottleneck: decisions wait for you, and your team learns to bring problems rather than solutions.',
         'Handing over decisions, with clear limits, builds your team and gives you back the time you want for strategy.',
       ],
-      showsUp: [
-        'Your calendar fills with problems your team could solve.',
-        'You re-do work rather than give feedback on it.',
-        'Projects slow down when you are away.',
-      ],
+      showsUp: ['Your calendar fills with problems your team could solve.', 'Projects slow down when you are away.'],
     },
     build: [
       { id: 'delegate-b1', kind: 'Read', title: 'The difference between delegating tasks and decisions', minutes: 7 },
-      { id: 'delegate-b2', kind: 'Tool', title: 'A decision map: what you decide, what they decide', minutes: 10 },
-      { id: 'delegate-b3', kind: 'Try', title: 'Hand one recurring decision to a team member this week', minutes: null },
+      { id: 'delegate-b2', kind: 'Try', title: 'Hand one recurring decision to a team member this week', minutes: null },
     ],
     practice: [
       {
         id: 'delegate-p1',
-        title: 'Handing over a decision you would usually make',
+        title: 'Hand a decision to a team lead',
         who: 'A capable team lead',
+        brief: 'An 8-minute role-play. They ask you to decide for them; you practise setting limits and letting go.',
         aim: 'Set clear limits, then let go.',
+        minutes: 8,
       },
     ],
   },
   {
     id: 'push-back',
-    title: 'Push back upwards',
+    title: 'Push back when I disagree with my manager',
     why: 'Give your manager your real view, even when it differs from theirs.',
     sources: {
-      enneagram: {
-        text: "Your own priorities can slip behind other people's, especially more senior people's.",
-        ref: 'Blind spots',
-      },
-      company: {
-        quote: "I'd like to see Sam push back on me more.",
-        ref: '360 feedback, line manager',
-      },
+      company: { quote: "I'd like to see Sam push back on me more.", ref: '360 feedback, line manager' },
       you: null,
+      enneagram: { text: "Your own priorities can slip behind other people's, especially more senior people's.", ref: 'Coaching Companion' },
     },
     insight: {
       paragraphs: [
         'Your manager has asked for more challenge. Agreeing keeps things smooth, but it also means your manager is deciding without the full picture you hold.',
         'Pushing back is not disloyalty. Done well, it is one of the most useful things you can offer a senior colleague.',
       ],
-      showsUp: [
-        'You accept deadlines you privately think are unrealistic.',
-        'Your manager hears about problems late.',
-      ],
+      showsUp: ['You accept deadlines you privately think are unrealistic.', 'Your manager hears about problems late.'],
     },
     build: [
       { id: 'push-back-b1', kind: 'Read', title: 'Managing up without managing around', minutes: 6 },
@@ -261,36 +298,29 @@ export const priorities = [
     practice: [
       {
         id: 'push-back-p1',
-        title: 'Saying a deadline is unrealistic',
+        title: 'Tell your manager a deadline is unrealistic',
         who: 'Your line manager',
+        brief: 'A 10-minute role-play. Your manager is under pressure too; you practise explaining the trade-off.',
         aim: 'Explain the trade-off and propose an alternative.',
+        minutes: 10,
       },
     ],
   },
   {
     id: 'steady',
-    title: 'Stay steady under pressure',
-    why: 'Notice when you go quiet, and say what you need instead.',
+    title: 'Say what I need when pressure builds',
+    why: 'Notice when you go quiet, and name the problem instead.',
     sources: {
-      enneagram: {
-        text: 'Under pressure you may become quietly stubborn rather than say no directly.',
-        ref: 'Conflict style',
-      },
-      company: {
-        text: 'Lowest values score: "Courageous conversations", 3.1 out of 5.',
-        ref: 'Company values survey',
-      },
+      company: { text: 'Lowest values score: "Courageous conversations", 3.1 out of 5.', ref: 'Company values survey' },
       you: null,
+      enneagram: { text: 'Under pressure, may become quietly stubborn rather than say no directly.', ref: 'Coaching Companion' },
     },
     insight: {
       paragraphs: [
         'When pressure builds, you tend to withdraw and dig in quietly rather than name the problem. People read this as calm, but the tension still affects the work.',
         'Learning to notice that moment, and to say plainly what you need, keeps pressure from turning into silent resistance.',
       ],
-      showsUp: [
-        'You agree to more than you can deliver, then slow down without saying so.',
-        'Your team senses tension but cannot tell what is wrong.',
-      ],
+      showsUp: ['You agree to more than you can deliver, then slow down without saying so.', 'Your team senses tension but cannot tell what is wrong.'],
     },
     build: [
       { id: 'steady-b1', kind: 'Read', title: 'Recognising your early signs of strain', minutes: 5 },
@@ -299,51 +329,11 @@ export const priorities = [
     practice: [
       {
         id: 'steady-p1',
-        title: 'Saying no to an urgent extra request',
-        who: 'A senior peer under pressure themselves',
-        aim: 'Decline clearly and offer what you can do.',
-      },
-    ],
-  },
-  {
-    id: 'say-no',
-    title: "Protect your team's focus",
-    why: 'Fewer, clearer priorities so the important work lands on time.',
-    sources: {
-      enneagram: {
-        text: 'Saying no can feel like letting people down.',
-        ref: 'Motivations',
-      },
-      company: {
-        text: 'On-time project delivery: 78% against a target of 90%.',
-        ref: 'Operations scorecard',
-      },
-      you: {
-        quote: "I'd like to spend less time firefighting and more time on strategy.",
-        ref: 'Your goals',
-      },
-    },
-    insight: {
-      paragraphs: [
-        'Your team takes on almost every request because you find it hard to turn people away. The result is too many projects in flight and late delivery across the board.',
-        'Choosing what the team will not do this quarter is as important as choosing what it will.',
-      ],
-      showsUp: [
-        'New requests are accepted without anything being dropped.',
-        'Your team is busy but key projects slip.',
-      ],
-    },
-    build: [
-      { id: 'say-no-b1', kind: 'Read', title: 'The cost of saying yes to everything', minutes: 5 },
-      { id: 'say-no-b2', kind: 'Tool', title: 'A one-page quarterly priority list', minutes: 15 },
-      { id: 'say-no-b3', kind: 'Try', title: 'Drop or defer one project this month', minutes: null },
-    ],
-    practice: [
-      {
-        id: 'say-no-p1',
-        title: 'Turning down a request from another department',
-        who: "A head of department you've worked with for years",
-        aim: 'Say no warmly, with a clear reason.',
+        title: 'Name the pressure in your team meeting',
+        who: 'Your team, at the weekly meeting',
+        brief: 'An 8-minute role-play. The team is stretched; you practise saying what is not working.',
+        aim: 'Name the problem and ask for help.',
+        minutes: 8,
       },
     ],
   },
@@ -384,7 +374,7 @@ export const managerPrep = {
 
 // Sam's entry in the team overview. Sam's plan and progress come from what the viewer clicks.
 export const samInTeam = {
-  nextOneToOne: 'Wednesday',
+  nextOneToOne: 'Thursday 6 February',
   lastActive: 'Today',
   practice: {
     id: 'mgr-sam',

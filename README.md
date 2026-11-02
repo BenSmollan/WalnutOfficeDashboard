@@ -5,17 +5,26 @@ It works on a laptop and a phone. Every person, company and piece of feedback in
 
 ## What's in it
 
-There are no logins, so a **View as** switch in the header changes who is using it: Sam Taylor (the individual) or Alex Morgan (Sam's manager). Each person only sees their own screens.
+The layout of My plan follows the reference mock-up Jo shared, in the Walnut Office look.
+
+A **Prototype** bar above the product holds the demo controls:
+- **View as** switches between Sam Patel (the individual) and Alex Morgan (Sam's manager). Each person only sees their own screens.
+- **Reset demo** goes back to the **start of the cycle** (nothing chosen yet) or a **mid-cycle example** (three priorities agreed, some progress made). A first visit opens the mid-cycle example.
 
 **Sam, the individual**
 
 | Screen | Address | What you can do |
 | --- | --- | --- |
-| 1. My inputs | `#inputs` | See the Enneagram summary and company feedback; add, edit or remove your own goals |
-| 2. Choose priorities | `#priorities` | Add three suggestions to your plan, set others aside, reorder them, then set the plan |
-| 3. My plan | `#plan` | See the three priorities with progress, the next step, and switches for what your manager can see |
-| 4–6. A priority | `#p-<id>-insight`, `-build`, `-practice` | Read why it matters and add reflections; tick off learning items; open a practice session |
-| Preview | `#preview` | See your profile exactly as your manager sees it |
+| My plan | `#plan` | Greeting, the three sources, the three priorities with their evidence and progress, and Coming up: next practice, the manager check-in and this week's reflection |
+| Insight | `#insight` | Why a priority matters; mark as read; private reflections |
+| Build | `#build` | Short learning items to tick off |
+| Practice | `#practice` | Conversations to rehearse in Ovida (a mock screen for now) |
+| Progress | `#progress` | Progress on each priority, all reflections, and what the manager can see |
+| My inputs | `#inputs` | Opened from the source tiles: the Enneagram summary, company feedback, and your goals to add or edit |
+| Choose priorities | `#priorities` | Opened from "Review my priorities": add three, set others aside, reorder, set the plan |
+| Preview | `#preview` | Your profile exactly as your manager sees it |
+
+Insight, Build and Practice show one priority at a time, with a switch between the three. A single priority's page is `#p-<id>-<insight|build|practice>`.
 
 **Alex, the manager**
 

@@ -1,154 +1,238 @@
-import ScreenHead from '../components/ScreenHead.jsx';
-import ProgressBar from '../components/ProgressBar.jsx';
-import { person } from '../content.js';
+import { useState } from 'react';
+import { company, companySummary, cycle, enneagram, person, product, weeklyReflection } from '../content.js';
+import { SourceLines } from '../components/SourceTag.jsx';
+import StatusChips from '../components/StatusChips.jsx';
+import ShareDialog from '../components/ShareDialog.jsx';
+import { ArrowRight, Check, FeedbackIcon, PersonIcon, ProfileIcon } from '../components/Icons.jsx';
 import { priorityHash } from '../router.js';
-import { planPriorities, progressFor } from '../useDemoState.js';
+import { nextPractice, nextTabFor, planPriorities } from '../useDemoState.js';
 
-function nextStep(state, list) {
-  for (const p of list) {
-    const pr = progressFor(state, p);
-    if (!state.insightRead[p.id]) return { p, tab: 'insight', label: 'Read why it matters' };
-    if (pr.buildDone < p.build.length) return { p, tab: 'build', label: 'Carry on learning' };
-    if (pr.practised < p.practice.length) return { p, tab: 'practice', label: 'Practise a conversation' };
-  }
-  return null;
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
 }
 
-export default function Plan({ state, actions }) {
-  if (!state.planSet) {
-    return (
-      <div className="screen">
-        <ScreenHead eyebrow="Step 3 of 3" title="Your Development Plan" />
-        <div className="empty-state">
-          <div className="texture" aria-hidden="true" />
-          <p>Your plan appears here once you&rsquo;ve chosen three priorities.</p>
-          <a href="#priorities" className="pill primary">
-            Choose my priorities
-          </a>
-        </div>
-      </div>
-    );
-  }
-
-  const list = planPriorities(state);
-  const totals = list.reduce(
-    (t, p) => {
-      const pr = progressFor(state, p);
-      return { done: t.done + pr.doneSteps, steps: t.steps + pr.steps };
+function SourceTiles({ state }) {
+  const tiles = [
+    { key: 'enneagram', icon: <ProfileIcon />, label: 'Your Enneagram profile', value: enneagram.type, note: enneagram.tileNote },
+    { key: 'company', icon: <FeedbackIcon />, label: 'Company feedback', value: companySummary.title, note: companySummary.tileNote },
+    {
+      key: 'you',
+      icon: <PersonIcon />,
+      label: 'Your own goals',
+      value: `${state.goals.length} goal${state.goals.length === 1 ? '' : 's'} you added`,
+      note: `Last updated ${cycle.goalsUpdated}`,
     },
-    { done: 0, steps: 0 },
+  ];
+  return (
+    <ul className="tiles" aria-label="Your three sources">
+      {tiles.map((t) => (
+        <li key={t.key}>
+          <a href="#inputs" className={`tile tile-${t.key}`}>
+            <span className="tile-icon">{t.icon}</span>
+            <span className="tile-text">
+              <span className="tile-label">{t.label}</span>
+              <span className="tile-value">{t.value}</span>
+              <span className="tile-note">{t.note}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
   );
-  const next = nextStep(state, list);
+}
+
+function sharedSentence(state) {
+  const parts = [];
+  if (state.sharing.priorities) parts.push('your three priorities and your progress');
+  if (state.sharing.summary) parts.push('your "how to work with me" summary');
+  if (parts.length === 0) return "Your manager won't see anything from your profile.";
+  return `Your manager will see ${parts.join(' and ')}, nothing else from your profile.`;
+}
+
+function ComingUp({ state, actions, onPractise }) {
+  const next = state.planSet ? nextPractice(state) : null;
+  const [draft, setDraft] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  return (
+    <aside className="coming-up" aria-labelledby="coming-up-title">
+      <h2 id="coming-up-title" className="section-title">
+        Coming Up
+      </h2>
+
+      {next && (
+        <section className="next-practice" aria-label="Next practice">
+          <p className="eyebrow on-dark">Next practice</p>
+          <h3>{next.conversation.title}</h3>
+          <p className="np-brief">{next.conversation.brief}</p>
+          <div className="actions">
+            {product.ovidaUrl ? (
+              <a
+                className="pill light"
+                href={product.ovidaUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => onPractise(next.conversation, true)}
+              >
+                Start practice
+              </a>
+            ) : (
+              <button type="button" className="pill light" onClick={() => onPractise(next.conversation)}>
+                Start practice
+              </button>
+            )}
+            <span className="np-note">Practice session in Ovida</span>
+          </div>
+        </section>
+      )}
+
+      <section className="side-card" aria-label="Check-in with your manager">
+        <p className="eyebrow">Check-in with your manager</p>
+        <p className="side-strong">{cycle.checkIn}</p>
+        <p className="side-text">{sharedSentence(state)}</p>
+        <a href="#preview" className="link-btn">
+          Prepare for this conversation
+        </a>
+      </section>
+
+      <section className="side-card" aria-label="This week's reflection">
+        <p className="eyebrow">This week&rsquo;s reflection</p>
+        <p className="side-strong">{weeklyReflection.prompt}</p>
+        <form
+          className="goal-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!draft.trim()) return;
+            actions.addReflection('weekly', draft.trim());
+            setDraft('');
+            setSaved(true);
+          }}
+        >
+          <label className="sr-only" htmlFor="weekly-reflection">
+            Your reflection
+          </label>
+          <textarea
+            id="weekly-reflection"
+            rows={3}
+            value={draft}
+            placeholder="A few lines is enough"
+            onChange={(e) => {
+              setDraft(e.target.value);
+              setSaved(false);
+            }}
+          />
+          <button type="submit" className="pill ghost small" disabled={!draft.trim()}>
+            Save reflection
+          </button>
+          {saved && (
+            <p className="saved-note" role="status">
+              <Check /> Saved. You can find it under <a href="#progress">Progress</a>.
+            </p>
+          )}
+        </form>
+      </section>
+    </aside>
+  );
+}
+
+export default function Plan({ state, actions, onPractise }) {
+  const [sharing, setSharing] = useState(false);
+  const list = planPriorities(state);
 
   return (
     <div className="screen">
-      <ScreenHead eyebrow="Step 3 of 3" title="Your Development Plan">
-        <p>Three priorities, chosen by you. Open one to see why it matters, learn, and practise the conversations involved.</p>
-      </ScreenHead>
-
-      <div className="plan-summary">
-        <div className="stat">
-          <p className="stat-number">
-            {totals.done} of {totals.steps}
-          </p>
-          <p className="stat-label">steps done across your plan</p>
-          <p className="stat-foot">Your plan so far</p>
+      <div className="home-head">
+        <div className="screen-head">
+          <p className="eyebrow">Development plan · {cycle.label}</p>
+          <h1>
+            {greeting()}, {person.firstName}
+          </h1>
+          <div className="screen-intro">
+            <p>
+              {state.planSet
+                ? "You chose three priorities for this cycle. Each one draws on your company's feedback, your own goals and your Enneagram profile."
+                : 'Start by checking your three sources, then choose three priorities for this cycle.'}
+            </p>
+          </div>
         </div>
-        <div className="next-step">
-          {next ? (
-            <>
-              <p className="eyebrow">Next step</p>
-              <p className="next-title">{next.p.title}</p>
-              <a className="pill primary" href={priorityHash(next.p.id, next.tab)}>
-                {next.label}
-              </a>
-            </>
-          ) : (
-            <>
-              <p className="eyebrow">All steps done</p>
-              <p className="next-title">You&rsquo;ve worked through every step in your plan.</p>
-            </>
-          )}
-        </div>
+        {state.planSet && (
+          <div className="head-actions">
+            <a href="#priorities" className="pill ghost">
+              Review my priorities
+            </a>
+            {state.shared ? (
+              <button type="button" className="pill ghost" onClick={() => setSharing(true)}>
+                <Check /> Shared with my manager
+              </button>
+            ) : (
+              <button type="button" className="pill primary" onClick={() => setSharing(true)}>
+                Share with my manager
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      <ol className="plan-grid">
-        {list.map((p, i) => {
-          const pr = progressFor(state, p);
-          return (
-            <li key={p.id}>
-              <article className="plan-card">
-                <p className="eyebrow">Priority {i + 1}</p>
-                <h2 className="priority-name small">
-                  <a href={priorityHash(p.id)} className="card-link">
-                    {p.title}
-                  </a>
-                </h2>
-                <p className="priority-why">{p.why}</p>
-                <ul className="status-list">
-                  <li className={state.insightRead[p.id] ? 'done' : ''}>
-                    <span>Insight</span>
-                    <span>{state.insightRead[p.id] ? 'Read' : 'Not read yet'}</span>
-                  </li>
-                  <li className={pr.buildDone === p.build.length ? 'done' : ''}>
-                    <span>Build</span>
-                    <span>
-                      {pr.buildDone} of {p.build.length} done
-                    </span>
-                  </li>
-                  <li className={pr.practised === p.practice.length ? 'done' : ''}>
-                    <span>Practice</span>
-                    <span>
-                      {pr.sessions === 0 ? 'Not started' : `${pr.sessions} session${pr.sessions === 1 ? '' : 's'}`}
-                    </span>
-                  </li>
-                </ul>
-                <ProgressBar done={pr.doneSteps} total={pr.steps} label={`Progress on ${p.title}`} />
-              </article>
-            </li>
-          );
-        })}
-      </ol>
+      <SourceTiles state={state} />
 
-      <section className="panel sharing" aria-labelledby="sharing-title">
-        <div className="sharing-text">
-          <h2 id="sharing-title" className="panel-title">
-            What {person.manager} can see
-          </h2>
-          <p className="muted">You decide what your manager sees. Your reflections always stay private.</p>
-        </div>
-        <div className="toggles">
-          <label className="toggle" htmlFor="share-summary">
-            <input
-              id="share-summary"
-              type="checkbox"
-              checked={state.sharing.summary}
-              onChange={(e) => actions.setSharing('summary', e.target.checked)}
-            />
-            <span className="switch" aria-hidden="true" />
-            <span>My &ldquo;how to work with me&rdquo; summary</span>
-          </label>
-          <label className="toggle" htmlFor="share-priorities">
-            <input
-              id="share-priorities"
-              type="checkbox"
-              checked={state.sharing.priorities}
-              onChange={(e) => actions.setSharing('priorities', e.target.checked)}
-            />
-            <span className="switch" aria-hidden="true" />
-            <span>My three priorities and progress</span>
-          </label>
-          <a href="#preview" className="link-btn">
-            Preview what {person.manager.split(' ')[0]} sees
-          </a>
-        </div>
-      </section>
+      <div className="home-grid">
+        <section className="home-main" aria-labelledby="my-priorities-title">
+          <div className="section-row">
+            <h2 id="my-priorities-title" className="section-title">
+              My Three Priorities
+            </h2>
+            {state.planSet && <p className="muted small">{state.sharedNote || 'Not yet shared with your manager'}</p>}
+          </div>
 
-      <p className="screen-foot quiet">
-        <a href="#priorities" className="link-btn">
-          Change my priorities
-        </a>
-      </p>
+          {state.planSet ? (
+            <ol className="priority-rows">
+              {list.map((p, i) => (
+                <li key={p.id} className="priority-row">
+                  <span className="row-number" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <div className="row-body">
+                    <h3 className="row-title">
+                      <a href={priorityHash(p.id, 'insight')}>{p.title}</a>
+                    </h3>
+                    <p className="row-why">{p.why}</p>
+                    <SourceLines sources={p.sources} />
+                    <div className="row-foot">
+                      <StatusChips state={state} priority={p} />
+                      <a href={priorityHash(p.id, nextTabFor(state, p))} className="pill ghost small continue">
+                        Continue <ArrowRight />
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div className="empty-state">
+              <div className="texture" aria-hidden="true" />
+              <p>
+                You haven&rsquo;t chosen your priorities for this cycle yet. There are {company.length} pieces of company
+                feedback and {state.goals.length} goals of your own to draw on.
+              </p>
+              <div className="actions">
+                <a href="#inputs" className="pill ghost">
+                  Check my sources
+                </a>
+                <a href="#priorities" className="pill primary">
+                  Choose my priorities
+                </a>
+              </div>
+            </div>
+          )}
+        </section>
+
+        <ComingUp state={state} actions={actions} onPractise={onPractise} />
+      </div>
+
+      {sharing && <ShareDialog state={state} actions={actions} onClose={() => setSharing(false)} />}
     </div>
   );
 }

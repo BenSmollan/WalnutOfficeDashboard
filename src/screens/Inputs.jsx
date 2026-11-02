@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ScreenHead from '../components/ScreenHead.jsx';
+import { ArrowLeft } from '../components/Icons.jsx';
 import Quote from '../components/Quote.jsx';
 import Meta from '../components/Meta.jsx';
 import { company, enneagram, person } from '../content.js';
@@ -65,7 +66,10 @@ export default function Inputs({ state, actions }) {
 
   return (
     <div className="screen">
-      <ScreenHead eyebrow="Step 1 of 3" title="Three Views of You">
+      <a href="#plan" className="back-link">
+        <ArrowLeft /> My plan
+      </a>
+      <ScreenHead eyebrow="Your inputs" title="Three Views of You">
         <p>
           Your plan draws on three sources: your Enneagram profile, feedback from {person.company}, and what you want for
           yourself. Add or change your goals, then see the priorities they suggest.
@@ -147,7 +151,7 @@ export default function Inputs({ state, actions }) {
 
       <div className="screen-foot">
         <a href="#priorities" className="pill primary">
-          See my suggested priorities
+          {state.planSet ? 'Review my priorities' : 'See my suggested priorities'}
         </a>
       </div>
     </div>

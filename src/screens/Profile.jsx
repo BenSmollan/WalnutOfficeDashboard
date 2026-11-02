@@ -32,8 +32,8 @@ export default function Profile({ id, state, onPractise, preview = false }) {
       {preview ? (
         <div className="manager-banner">
           <p>
-            <strong>Preview.</strong> This is what {manager.name} sees on your profile. Change it with the switches on My
-            plan.
+            <strong>Preview.</strong> This is what {manager.name} sees on your profile. Change it under Progress or with
+            Share with my manager.
           </p>
           <a href="#plan" className="link-btn">
             Back to my plan

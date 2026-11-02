@@ -1,16 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ScreenHead from '../components/ScreenHead.jsx';
 import Sources from '../components/Sources.jsx';
 import Meta from '../components/Meta.jsx';
+import { ArrowLeft, Check } from '../components/Icons.jsx';
 import { priorities, product } from '../content.js';
 import { priorityHash } from '../router.js';
 import { planPriorities, progressFor } from '../useDemoState.js';
 
-const TABS = [
-  { key: 'insight', label: 'Insight' },
-  { key: 'build', label: 'Build' },
-  { key: 'practice', label: 'Practice' },
-];
+const TAB_TITLES = { insight: 'Insight', build: 'Build', practice: 'Practice' };
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
@@ -34,10 +31,7 @@ function InsightTab({ p, state, actions }) {
         <div className="actions">
           {read ? (
             <span className="chip-added">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Read
+              <Check /> Read
             </span>
           ) : (
             <button type="button" className="pill ghost" onClick={() => actions.markRead(p.id)}>
@@ -108,9 +102,7 @@ function BuildTab({ p, state, actions }) {
             <label htmlFor={`item-${b.id}`}>
               <input id={`item-${b.id}`} type="checkbox" checked={!!state.done[b.id]} onChange={() => actions.toggleDone(b.id)} />
               <span className="check" aria-hidden="true">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <Check size={12} />
               </span>
               <span className="item-text">
                 <span className="item-title">{b.title}</span>
@@ -140,6 +132,7 @@ function PracticeTab({ p, state, onPractise }) {
           return (
             <li key={c.id} className="practice-card">
               <h3 className="item-heading">{c.title}</h3>
+              <p className="muted small">{c.brief}</p>
               <dl className="facts">
                 <div>
                   <dt>Who you&rsquo;re talking to</dt>
@@ -171,33 +164,58 @@ function PracticeTab({ p, state, onPractise }) {
 }
 
 export default function Priority({ route, state, actions, onPractise }) {
-  const p = priorities.find((x) => x.id === route.id);
+  const plan = planPriorities(state);
+  const tab = route.tab || 'insight';
+  // From the main menu (#insight, #build, #practice) there is no id: use the last priority opened.
+  const id = route.id || (plan.some((x) => x.id === state.lastPriority) ? state.lastPriority : plan[0]?.id);
+  const p = priorities.find((x) => x.id === id);
+
+  useEffect(() => {
+    if (!p) return;
+    actions.setLastPriority(p.id);
+    if (tab === 'insight') actions.openInsight(p.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [p?.id, tab]);
+
   if (!p) {
     return (
       <div className="screen">
-        <ScreenHead title="Priority Not Found">
-          <p>
-            <a href="#plan" className="link-btn">
-              Back to my plan
-            </a>
-          </p>
+        <ScreenHead eyebrow={TAB_TITLES[tab]} title="Choose Your Priorities First">
+          <p>Insight, Build and Practice open once you have chosen three priorities for this cycle.</p>
         </ScreenHead>
+        <div className="actions">
+          <a href="#priorities" className="pill primary">
+            Choose my priorities
+          </a>
+        </div>
       </div>
     );
   }
-  const plan = planPriorities(state);
+
   const index = plan.findIndex((x) => x.id === p.id);
   const pr = progressFor(state, p);
 
   return (
     <div className="screen">
       <a href="#plan" className="back-link">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M13 8H3M7.5 3.5 3 8l4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        My plan
+        <ArrowLeft /> My plan
       </a>
-      <ScreenHead eyebrow={index >= 0 && state.planSet ? `Priority ${index + 1} of ${plan.length}` : 'Suggested priority'} title={p.title}>
+
+      {plan.length > 0 && index >= 0 && (
+        <nav className="switcher" aria-label="Choose a priority">
+          {plan.map((x, i) => (
+            <a key={x.id} href={priorityHash(x.id, tab)} className="switch-item" aria-current={x.id === p.id ? 'true' : undefined}>
+              <span className="row-number small">{i + 1}</span>
+              <span className="switch-title">{x.title}</span>
+            </a>
+          ))}
+        </nav>
+      )}
+
+      <ScreenHead
+        eyebrow={`${TAB_TITLES[tab]} · ${index >= 0 && state.planSet ? `Priority ${index + 1} of ${plan.length}` : 'Suggested priority'}`}
+        title={p.title}
+      >
         <p>{p.why}</p>
       </ScreenHead>
 
@@ -206,25 +224,22 @@ export default function Priority({ route, state, actions, onPractise }) {
         <Sources sources={p.sources} compact />
       </details>
 
-      <nav className="tabs" aria-label="Priority sections">
-        {TABS.map((t) => (
-          <a key={t.key} href={priorityHash(p.id, t.key)} className="tab" aria-current={route.tab === t.key ? 'page' : undefined}>
-            {t.label}
-            {t.key === 'insight' && state.insightRead[p.id] && <span className="tab-tick" aria-label="read" />}
-            {t.key === 'build' && (
-              <span className="tab-count">
-                {pr.buildDone}/{p.build.length}
-              </span>
-            )}
-            {t.key === 'practice' && pr.sessions > 0 && <span className="tab-count">{pr.sessions}</span>}
-          </a>
-        ))}
-      </nav>
+      <p className="tab-progress meta">
+        <span>Insight {pr.insight}</span>
+        <span className="dot" aria-hidden="true" />
+        <span>
+          Build {pr.buildDone} of {p.build.length}
+        </span>
+        <span className="dot" aria-hidden="true" />
+        <span>
+          {pr.sessions} practice session{pr.sessions === 1 ? '' : 's'}
+        </span>
+      </p>
 
       <div className="tab-panel">
-        {route.tab === 'insight' && <InsightTab p={p} state={state} actions={actions} />}
-        {route.tab === 'build' && <BuildTab p={p} state={state} actions={actions} />}
-        {route.tab === 'practice' && <PracticeTab p={p} state={state} onPractise={onPractise} />}
+        {tab === 'insight' && <InsightTab p={p} state={state} actions={actions} />}
+        {tab === 'build' && <BuildTab p={p} state={state} actions={actions} />}
+        {tab === 'practice' && <PracticeTab p={p} state={state} onPractise={onPractise} />}
       </div>
     </div>
   );
